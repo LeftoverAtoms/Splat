@@ -18,7 +18,7 @@ public class Client : IClient
 
 	async void Update()
 	{
-		byte[] bytes = new byte[16];
+		byte[] bytes = new byte[1000];
 
 		while (true)
 		{

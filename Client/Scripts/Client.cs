@@ -45,7 +45,7 @@ public class Client : IClient
 			Stream?.Write(bytes, 0, bytes.Length);
 
 			// Tick rate.
-			await Task.Delay(100);
+			await Task.Delay(1000);
 		}
 	}
 }

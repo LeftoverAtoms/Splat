@@ -13,7 +13,7 @@ public class Server
 
 	public List<IClient> Clients { get; } = new List<IClient>();
 
-	readonly TcpListener listener;
+	readonly TcpListener? listener;
 
 	public Server(string ipString, ushort port)
 	{
@@ -49,6 +49,9 @@ public class Server
 
 	async void RegisterNewClients()
 	{
+		if (listener == null)
+			return;
+
 		// Wait for a client to request a connection.
 		var tcp = await listener.AcceptTcpClientAsync();
 
