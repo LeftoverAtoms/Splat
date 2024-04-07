@@ -7,7 +7,7 @@ public class Client : TcpClient
 {
 	public ClientData Data;
 
-	NetworkStream stream;
+	NetworkStream? stream;
 
 	public Client(string name)
 	{
