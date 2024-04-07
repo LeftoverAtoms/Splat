@@ -1,14 +1,15 @@
-﻿using System.Net.Sockets;
+﻿using System;
+using System.Net.Sockets;
 using System.Threading.Tasks;
 
 namespace Splat;
 
-public class Client : IClient
+public class ServerClient : IClient
 {
 	public NetworkStream Stream { get; }
 	public ClientData Data { get; private set; }
 
-	public Client(NetworkStream stream)
+	public ServerClient(NetworkStream stream)
 	{
 		Stream = stream;
 
@@ -21,7 +22,17 @@ public class Client : IClient
 
 		while (true)
 		{
-			Stream.Read(bytes, 0, bytes.Length);
+			try
+			{
+				Stream.Read(bytes, 0, bytes.Length);
+			}
+			catch
+			{
+				Console.WriteLine($"{Data.Name} has disconnected.");
+				Server.Clients.Remove(this);
+				return;
+			}
+
 			Data = ClientData.Deserialize(bytes);
 
 			await Task.Delay(1000);
