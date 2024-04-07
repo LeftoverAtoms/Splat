@@ -43,7 +43,7 @@ public struct ClientData()
 		try
 		{
 			ptr = Marshal.AllocHGlobal(size);
-			Marshal.StructureToPtr(this, ptr, true);
+			Marshal.StructureToPtr(this, ptr, false); // 'fDeleteOld = false' may cause a memory leak.
 			Marshal.Copy(ptr, bytes, 0, size);
 		}
 		finally
