@@ -44,14 +44,14 @@ public class Server
 
 	async void RegisterNewClients()
 	{
-		var client = await listener.AcceptTcpClientAsync();
+		// Wait for a client to request a connection.
+		var tcp = await listener.AcceptTcpClientAsync();
 
-		byte[] bytes = new byte[1024];
-		client.GetStream().Read(bytes, 0, bytes.Length);
-		ClientData data = ClientData.Deserialize(bytes);
+		var client = new Client(tcp.Client, tcp.GetStream());
+		client.Update(true);
 
-		Clients.Add(new Client(data));
+		Clients.Add(client);
 
-		Console.WriteLine($"{data.Name} has connected.");
+		Console.WriteLine($"{client.Data.Name} has connected.");
 	}
 }

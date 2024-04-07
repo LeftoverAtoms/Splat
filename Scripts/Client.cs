@@ -3,34 +3,56 @@ using System.Runtime.InteropServices;
 
 namespace Splat;
 
-public class Client : TcpClient
+public class Client
 {
+	public Socket Socket { get; private set; }
+	public NetworkStream Stream { get; private set; }
+
 	public ClientData Data;
+	static byte[] bytes = new byte[1000];
 
-	NetworkStream? stream;
-
+	public Client(Socket socket, NetworkStream stream)
+	{
+		Socket = socket;
+		Stream = stream;
+	}
 	public Client(string name)
 	{
 		Data.Name = name;
 	}
-	public Client(ClientData data)
-	{
-		Data = data;
-	}
 
 	public void Connect(Server server)
 	{
-		Connect(server.IP, server.Port);
+		Socket = new Socket(server.IP.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+		Socket.Connect(server.IP, server.Port);
 
-		stream = GetStream();
+		Stream = new NetworkStream(Socket, true);
 
-		// Replicate to server.
-		byte[] bytes = Data.Serialize();
-		stream.Write(bytes, 0, bytes.Length);
+		Update(false);
+	}
+
+	public async void Update(bool isServer)
+	{
+		while (true)
+		{
+			if (isServer)
+			{
+				Stream.Read(bytes, 0, bytes.Length);
+				Data = ClientData.Deserialize(bytes);
+			}
+			else
+			{
+				// Replicate to server.
+				byte[] bytes = Data.Serialize();
+				Stream.Write(bytes, 0, bytes.Length);
+			}
+
+			await Task.Delay(100);
+		}
 	}
 }
 
-public struct ClientData()
+public struct ClientData
 {
 	public string Name;
 
