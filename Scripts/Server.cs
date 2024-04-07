@@ -17,10 +17,17 @@ public class Server
 		IP = IPAddress.Parse(ipString);
 		Port = port;
 
-		listener = new TcpListener(IP, Port);
-		listener.Start();
+		try
+		{
+			listener = new TcpListener(IP, Port);
+			listener.Start();
 
-		Update();
+			Update();
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine($"Failed to create server: {ex}");
+		}
 	}
 
 	async void Update()
