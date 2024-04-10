@@ -20,6 +20,10 @@ class Program
 		var client = new Client("Adam");
 		client.Connect("127.0.0.1", 1234);
 
+		// Create textfield.
+		var textfield = new TextField(128, 128);
+		textfield.Text = "Testing 123";
+		textfield.Render();
 
 		while (true)
 		{
@@ -29,6 +33,10 @@ class Program
 				{
 					case SDL_EventType.SDL_QUIT:
 					return;
+					case SDL_EventType.SDL_KEYDOWN:
+					textfield.Text += SDL_GetKeyName(e.key.keysym.sym);
+					textfield.Render();
+					break;
 				}
 			}
 		}
