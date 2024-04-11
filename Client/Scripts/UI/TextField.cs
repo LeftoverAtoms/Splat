@@ -58,6 +58,8 @@ public sealed class TextField : UI
 			Console.WriteLine(SDL_GetError());
 			return;
 		}
+
+		SDL_DestroyTexture(texture);
 	}
 	public override void OnEvent(SDL_Event e)
 	{
