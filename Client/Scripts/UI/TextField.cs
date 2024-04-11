@@ -55,6 +55,5 @@ public class TextField : Entity
 			return;
 		}
 
-		SDL_RenderPresent(Program.Renderer);
 	}
 }
