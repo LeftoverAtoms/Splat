@@ -8,16 +8,12 @@ namespace Splat;
 
 public class Program
 {
-	public static IntPtr Window;
-	public static IntPtr Renderer;
+	public static List<Entity> Entities { get; } = new List<Entity>(10);
 
-	public static IntPtr Font;
+	public static IntPtr Window { get; private set; }
+	public static IntPtr Renderer { get; private set; }
 
-	public static Vector2 Mouse;
-	public static bool IsClicking;
-	public static Entity Selection;
-
-	static List<Entity> entities = new List<Entity>(10);
+	public static IntPtr Font { get; private set; }
 
 	static void Main(string[] args)
 	{
@@ -25,56 +21,52 @@ public class Program
 			return;
 
 		// Create textfield.
-		var textfield = new TextField(128, 128);
-		textfield.Text = "TextField 1";
-		entities.Add(textfield);
+		new TextField(128, 128, "TextField 1");
+		new TextField(512, 128, "TextField 2");
 
-		// Create textfield.
-		textfield = new TextField(512, 128);
-		textfield.Text = "TextField 2";
-		entities.Add(textfield);
+		bool isRunning = true;
 
 		// Gameloop
-		while (true)
+		while (isRunning)
 		{
-			IsClicking = false;
+			Cursor.State = SDL_RELEASED;
 
-			// Input
-			while (SDL_PollEvent(out SDL_Event e) == 1)
+			// Handle all events within the queue before continuing.
+			while (SDL_PollEvent(out var evt) != 0)
 			{
-				Selection?.OnEvent(e);
+				Cursor.Selection?.OnEvent(evt);
 
-				switch (e.type)
+				switch (evt.type)
 				{
 					case SDL_EventType.SDL_MOUSEMOTION:
 					{
-						Mouse.X = e.motion.x;
-						Mouse.Y = e.motion.y;
+						Cursor.Position = new Vector2(evt.motion.x, evt.motion.y);
 						break;
 					}
 
 					case SDL_EventType.SDL_MOUSEBUTTONDOWN:
 					{
-						IsClicking = e.button.state == SDL_PRESSED ? true : false;
+						Cursor.State = evt.button.state;
 						break;
 					}
 
 					case SDL_EventType.SDL_QUIT:
 					{
-						return;
+						isRunning = false;
+						break;
 					}
 				}
 			}
 
 			// Update
-			foreach (var entity in entities)
+			foreach (var entity in Entities)
 			{
 				entity.Update();
 			}
 
 			// Render
 			SDL_RenderClear(Program.Renderer);
-			foreach (var entity in entities)
+			foreach (var entity in Entities)
 			{
 				entity.Render();
 			}

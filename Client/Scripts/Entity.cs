@@ -8,6 +8,11 @@ public abstract class Entity
 	protected SDL_Rect transform;
 	#endregion
 
+	public Entity()
+	{
+		Program.Entities.Add(this);
+	}
+
 	public void SetPosition(int x, int y)
 	{
 		transform.x = x;

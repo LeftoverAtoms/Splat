@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System;
+using System.Numerics;
 
 namespace Splat;
 
@@ -17,11 +18,11 @@ public abstract class UI : Entity
 
 	public override void Update()
 	{
-		if (Contains(Program.Mouse))
+		if (Contains(Cursor.Position))
 		{
-			if (Program.IsClicking)
+			if (Cursor.State == SDL_PRESSED)
 			{
-				Program.Selection = this;
+				Cursor.Selection = this;
 			}
 
 			if (!hover)

@@ -7,9 +7,10 @@ public sealed class TextField : UI
 	public string Text { get; set; } = "";
 	public SDL_Color TextColor { get; private set; } = new SDL_Color() { r = 255, b = 255, g = 255, a = 255 };
 
-	public TextField(int x, int y)
+	public TextField(int x, int y, string text = "")
 	{
 		SetPosition(x, y);
+		Text = text;
 	}
 
 	public void SetTextColor(byte red, byte green, byte blue, byte alpha = 255)
