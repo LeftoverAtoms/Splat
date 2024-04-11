@@ -19,5 +19,6 @@ public abstract class Entity
 		transform.h = h;
 	}
 
+	public virtual void Update() { }
 	public virtual void Render() { }
 }

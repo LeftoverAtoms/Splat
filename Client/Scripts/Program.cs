@@ -1,6 +1,7 @@
 ﻿global using static SDL2.SDL;
 global using static SDL2.SDL_ttf;
 using System;
+using System.Collections.Generic;
 
 namespace Splat;
 
@@ -10,6 +11,8 @@ class Program
 	public static IntPtr Renderer;
 
 	public static IntPtr Font;
+
+	static List<Entity> entities = new List<Entity>(10);
 
 	static void Main(string[] args)
 	{
@@ -23,10 +26,11 @@ class Program
 		// Create textfield.
 		var textfield = new TextField(128, 128);
 		textfield.Text = "Testing 123";
-		textfield.Render();
 
+		// Gameloop
 		while (true)
 		{
+			// Input
 			while (SDL_PollEvent(out SDL_Event e) == 1)
 			{
 				switch (e.type)
@@ -35,10 +39,23 @@ class Program
 					return;
 					case SDL_EventType.SDL_KEYDOWN:
 					textfield.Text += SDL_GetKeyName(e.key.keysym.sym);
-					textfield.Render();
 					break;
 				}
 			}
+
+			// Update
+			foreach (var entity in entities)
+			{
+				entity.Update();
+			}
+
+			// Render
+			SDL_RenderClear(Program.Renderer);
+			foreach (var entity in entities)
+			{
+				entity.Render();
+			}
+			SDL_RenderPresent(Program.Renderer);
 		}
 	}
 
