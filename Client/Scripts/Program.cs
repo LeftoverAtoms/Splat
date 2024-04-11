@@ -2,15 +2,20 @@
 global using static SDL2.SDL_ttf;
 using System;
 using System.Collections.Generic;
+using System.Numerics;
 
 namespace Splat;
 
-class Program
+public class Program
 {
 	public static IntPtr Window;
 	public static IntPtr Renderer;
 
 	public static IntPtr Font;
+
+	public static Vector2 Mouse;
+	public static bool IsClicking;
+	public static Entity Selection;
 
 	static List<Entity> entities = new List<Entity>(10);
 
@@ -19,27 +24,45 @@ class Program
 		if (!SetupSDL())
 			return;
 
-		// Connect a client to the server.
-		var client = new Client("Adam");
-		client.Connect("127.0.0.1", 1234);
-
 		// Create textfield.
 		var textfield = new TextField(128, 128);
-		textfield.Text = "Testing 123";
+		textfield.Text = "TextField 1";
+		entities.Add(textfield);
+
+		// Create textfield.
+		textfield = new TextField(512, 128);
+		textfield.Text = "TextField 2";
+		entities.Add(textfield);
 
 		// Gameloop
 		while (true)
 		{
+			IsClicking = false;
+
 			// Input
 			while (SDL_PollEvent(out SDL_Event e) == 1)
 			{
+				Selection?.OnEvent(e);
+
 				switch (e.type)
 				{
+					case SDL_EventType.SDL_MOUSEMOTION:
+					{
+						Mouse.X = e.motion.x;
+						Mouse.Y = e.motion.y;
+						break;
+					}
+
+					case SDL_EventType.SDL_MOUSEBUTTONDOWN:
+					{
+						IsClicking = e.button.state == SDL_PRESSED ? true : false;
+						break;
+					}
+
 					case SDL_EventType.SDL_QUIT:
-					return;
-					case SDL_EventType.SDL_KEYDOWN:
-					textfield.Text += SDL_GetKeyName(e.key.keysym.sym);
-					break;
+					{
+						return;
+					}
 				}
 			}
 

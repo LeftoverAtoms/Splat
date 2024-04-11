@@ -21,4 +21,5 @@ public abstract class Entity
 
 	public virtual void Update() { }
 	public virtual void Render() { }
+	public virtual void OnEvent(SDL_Event e) { }
 }
