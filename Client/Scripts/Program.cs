@@ -17,6 +17,8 @@ public class Program
 
 	static bool running = true;
 
+	public static float DeltaTime { get; private set; }
+
 	static void Main()
 	{
 		// Initialize sdl.
@@ -27,12 +29,22 @@ public class Program
 		_ = new TextField(128, 128, "TextField 1");
 		_ = new TextField(512, 128, "TextField 2");
 
+		float b = 0;
+
 		// Execute gameloop.
 		while (running)
 		{
-			Input();
-			Update();
-			Render();
+			float a = SDL_GetTicks();
+			DeltaTime = a - b;
+
+			if (DeltaTime > 1000 / 60.0f)
+			{
+				b = a;
+
+				Input();
+				Update();
+				Render();
+			}
 		}
 
 		// Exit application.
