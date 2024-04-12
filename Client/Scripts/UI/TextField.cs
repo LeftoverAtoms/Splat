@@ -26,6 +26,9 @@ public sealed class TextField : UI
 
 	public override void Render()
 	{
+		DrawBox(16);
+
+		// No text.
 		if (Text.Length == 0)
 			return;
 
@@ -119,5 +122,19 @@ public sealed class TextField : UI
 		{
 			Console.WriteLine("Cannot exceed 16 characters!");
 		}
+	}
+
+	void DrawBox(int offset)
+	{
+		SDL_Rect box = transform;
+
+		box.x -= offset / 2;
+		box.y -= offset / 2;
+		box.w += offset;
+		box.h += offset;
+
+		_ = SDL_SetRenderDrawColor(Program.Renderer, 255, 255, 255, 255);
+		_ = SDL_RenderDrawRect(Program.Renderer, ref box);
+		_ = SDL_SetRenderDrawColor(Program.Renderer, 0, 0, 0, 255);
 	}
 }
