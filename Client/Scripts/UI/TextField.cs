@@ -66,61 +66,53 @@ public sealed class TextField : UI
 	}
 	public override void OnEvent(SDL_Event e)
 	{
-		if (e.type != SDL_EventType.SDL_KEYDOWN)
-			return;
-
-		SDL_Keycode keycode = e.key.keysym.sym;
-		string key = "";
-
-		switch (keycode)
+		switch (e.type)
 		{
-			case SDL_Keycode.SDLK_RETURN:
-			case SDL_Keycode.SDLK_KP_ENTER:
+			case SDL_EventType.SDL_KEYDOWN:
 			{
-				// Connect a client to the server.
-				var client = new Client(Text);
-				client.Connect("127.0.0.1", 1234);
-				break;
-			}
-
-			case SDL_Keycode.SDLK_SPACE:
-			case SDL_Keycode.SDLK_KP_SPACE:
-			{
-				key = " ";
-				break;
-			}
-
-			case SDL_Keycode.SDLK_BACKSPACE:
-			{
-				if (Text.Length > 0)
+				switch (e.key.keysym.sym)
 				{
-					Text = Text.Remove(Text.Length - 1);
-				}
-				key = "";
-				break;
-			}
+					case SDL_Keycode.SDLK_RETURN:
+					case SDL_Keycode.SDLK_KP_ENTER:
+					{
+						// TODO: Change name of client instead of connecting a new client!
+						// Connect a client to the server.
+						var client = new Client(Text);
+						client.Connect("127.0.0.1", 1234);
 
-			default:
-			{
-				key = SDL_GetKeyName(keycode);
+						break;
+					}
 
-				if (key.Length != 1)
-				{
-					key = "";
-					break;
+					case SDL_Keycode.SDLK_BACKSPACE:
+					case SDL_Keycode.SDLK_KP_BACKSPACE:
+					{
+						if (Text.Length > 0)
+						{
+							Text = Text.Remove(Text.Length - 1);
+						}
+
+						break;
+					}
 				}
 
 				break;
 			}
-		}
+			case SDL_EventType.SDL_TEXTINPUT:
+			{
+				if (Text.Length <= 16)
+				{
+					unsafe
+					{
+						Text += Convert.ToChar(*e.text.text);
+					}
+				}
+				else
+				{
+					Console.WriteLine("Cannot exceed 16 characters!");
+				}
 
-		if (Text.Length != 16)
-		{
-			Text += key;
-		}
-		else
-		{
-			Console.WriteLine("Cannot exceed 16 characters!");
+				break;
+			}
 		}
 	}
 
