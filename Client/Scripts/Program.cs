@@ -28,8 +28,8 @@ public class Program
 		_ = new Label(128, 32, "Splat");
 
 		// Create textfields.
-		_ = new TextField(128, 128, "TextField 1");
-		_ = new TextField(512, 128, "TextField 2");
+		_ = new LabelField(128, 128, "Label Field 1");
+		_ = new LabelField(512, 128, "Label Field 2");
 
 		float b = 0;
 

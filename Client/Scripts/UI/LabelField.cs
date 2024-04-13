@@ -2,9 +2,9 @@
 
 namespace Splat;
 
-public sealed class TextField : Label
+public sealed class LabelField : Label
 {
-	public TextField(int x, int y, string text = "") : base(x, y, text) { }
+	public LabelField(int x, int y, string text = "") : base(x, y, text) { }
 
 	public override void Render()
 	{
