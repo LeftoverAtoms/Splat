@@ -8,7 +8,7 @@ namespace Splat;
 public class Client : IClient
 {
 	public NetworkStream? Stream { get; private set; }
-	public ClientData Data { get; set; }
+	public ClientData Data { get; private set; }
 
 	public Client(string name)
 	{
@@ -16,6 +16,13 @@ public class Client : IClient
 		{
 			Name = name
 		};
+	}
+
+	public void SetName(string name)
+	{
+		var data = Data;
+		data.Name = name;
+		Data = data;
 	}
 
 	public async void Connect(string ipString, ushort port)
