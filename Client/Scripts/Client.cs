@@ -33,6 +33,7 @@ public class Client : IClient
 		catch (Exception ex)
 		{
 			Console.WriteLine(ex.Message);
+			Connect(ipString, port);
 		}
 	}
 

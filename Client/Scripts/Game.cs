@@ -19,6 +19,8 @@ public class Game
 
 	public static float DeltaTime { get; private set; }
 
+	public static Client? LocalClient;
+
 	static void Main()
 	{
 		// Initialize sdl.
@@ -30,6 +32,8 @@ public class Game
 		// Create textfields.
 		_ = new LabelField(128, 128, "Label Field 1");
 		_ = new LabelField(512, 128, "Label Field 2");
+
+		Start();
 
 		float b = 0;
 
@@ -95,6 +99,12 @@ public class Game
 
 		// Success!
 		return true;
+	}
+
+	static void Start()
+	{
+		LocalClient = new Client(Environment.UserName);
+		LocalClient.Connect("127.0.0.1", 1234);
 	}
 
 	static void Input()

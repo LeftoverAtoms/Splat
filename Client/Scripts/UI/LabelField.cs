@@ -22,11 +22,6 @@ public sealed class LabelField : Label
 					case SDL_Keycode.SDLK_RETURN:
 					case SDL_Keycode.SDLK_KP_ENTER:
 					{
-						// TODO: Change name of client instead of connecting a new client!
-						// Connect a client to the server.
-						var client = new Client(Text);
-						client.Connect("127.0.0.1", 1234);
-
 						break;
 					}
 
