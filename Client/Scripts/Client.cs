@@ -8,7 +8,7 @@ namespace Splat;
 public class Client : IClient
 {
 	public NetworkStream? Stream { get; private set; }
-	public ClientData Data { get; private set; }
+	public ClientData Data { get; set; }
 
 	public Client(string name)
 	{

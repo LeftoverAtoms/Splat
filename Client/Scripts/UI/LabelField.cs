@@ -22,6 +22,10 @@ public sealed class LabelField : Label
 					case SDL_Keycode.SDLK_RETURN:
 					case SDL_Keycode.SDLK_KP_ENTER:
 					{
+						var old = Game.LocalClient.Data;
+						old.Name = Text;
+						Game.LocalClient.Data = old;
+
 						break;
 					}
 
