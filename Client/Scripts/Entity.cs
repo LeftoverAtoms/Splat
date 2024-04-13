@@ -6,7 +6,7 @@ public abstract class Entity
 
 	public Entity()
 	{
-		Program.Entities.Add(this);
+		Game.Entities.Add(this);
 	}
 
 	public void SetPosition(int x, int y)

@@ -6,7 +6,7 @@ using System.Numerics;
 
 namespace Splat;
 
-public class Program
+public class Game
 {
 	public static List<Entity> Entities { get; } = new List<Entity>(10);
 

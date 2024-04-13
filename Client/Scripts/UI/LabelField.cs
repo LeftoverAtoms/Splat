@@ -72,17 +72,17 @@ public sealed class LabelField : Label
 		box.w += offset;
 		box.h += offset;
 
-		if (SDL_SetRenderDrawColor(Program.Renderer, 255, 255, 255, 255) != 0)
+		if (SDL_SetRenderDrawColor(Game.Renderer, 255, 255, 255, 255) != 0)
 		{
 			Console.WriteLine(SDL_GetError());
 			return;
 		}
-		if (SDL_RenderDrawRect(Program.Renderer, ref box) != 0)
+		if (SDL_RenderDrawRect(Game.Renderer, ref box) != 0)
 		{
 			Console.WriteLine(SDL_GetError());
 			return;
 		}
-		if (SDL_SetRenderDrawColor(Program.Renderer, 0, 0, 0, 0) != 0)
+		if (SDL_SetRenderDrawColor(Game.Renderer, 0, 0, 0, 0) != 0)
 		{
 			Console.WriteLine(SDL_GetError());
 			return;

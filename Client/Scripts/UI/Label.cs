@@ -28,7 +28,7 @@ public class Label : UI
 		int result;
 
 		// Set text scale.
-		result = TTF_SizeText(Program.Font, Text, out int width, out int height);
+		result = TTF_SizeText(Game.Font, Text, out int width, out int height);
 		if (result != 0)
 		{
 			Console.WriteLine(SDL_GetError());
@@ -37,7 +37,7 @@ public class Label : UI
 		SetScale(width, height);
 
 		// Rasterize text.
-		IntPtr surface = TTF_RenderUTF8_Solid(Program.Font, Text, TextColor);
+		IntPtr surface = TTF_RenderUTF8_Solid(Game.Font, Text, TextColor);
 		if (surface == IntPtr.Zero)
 		{
 			Console.WriteLine(SDL_GetError());
@@ -45,7 +45,7 @@ public class Label : UI
 		}
 
 		// Create texture from surface.
-		IntPtr texture = SDL_CreateTextureFromSurface(Program.Renderer, surface);
+		IntPtr texture = SDL_CreateTextureFromSurface(Game.Renderer, surface);
 		SDL_FreeSurface(surface);
 		if (texture == IntPtr.Zero)
 		{
@@ -54,7 +54,7 @@ public class Label : UI
 		}
 
 		// Copy texture to screen.
-		result = SDL_RenderCopy(Program.Renderer, texture, IntPtr.Zero, ref Transform);
+		result = SDL_RenderCopy(Game.Renderer, texture, IntPtr.Zero, ref Transform);
 		SDL_DestroyTexture(texture);
 		if (result != 0)
 		{
