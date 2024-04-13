@@ -25,6 +25,8 @@ public class Program
 		if (!SetupSDL(title: "Splat", font: "Roboto-Regular"))
 			return;
 
+		_ = new Label(128, 32, "Splat");
+
 		// Create textfields.
 		_ = new TextField(128, 128, "TextField 1");
 		_ = new TextField(512, 128, "TextField 2");
