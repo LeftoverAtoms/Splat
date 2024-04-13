@@ -1,5 +1,4 @@
-﻿using System;
-using System.Numerics;
+﻿using System.Numerics;
 
 namespace Splat;
 
@@ -9,8 +8,8 @@ public abstract class UI : Entity
 
 	public bool Contains(Vector2 point)
 	{
-		return (point.X >= transform.x && point.X <= transform.x + transform.w)
-			&& (point.Y >= transform.y && point.Y <= transform.y + transform.h);
+		return (point.X >= Transform.x && point.X <= Transform.x + Transform.w)
+			&& (point.Y >= Transform.y && point.Y <= Transform.y + Transform.h);
 	}
 
 	public virtual void OnHoverEnter() { }

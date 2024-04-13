@@ -118,7 +118,7 @@ public sealed class TextField : UI
 
 	void DrawBox(int offset)
 	{
-		SDL_Rect box = transform;
+		SDL_Rect box = Transform;
 
 		box.x -= offset / 2;
 		box.y -= offset / 2;
