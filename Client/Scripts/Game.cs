@@ -34,10 +34,10 @@ public class Game
 		_ = new LabelField(128, 128, "Label Field 1");
 		_ = new LabelField(512, 128, "Label Field 2");
 
-		_ = new Image(256, 256, 128, 90, "Arrow.png");
-		_ = new Image(384, 256, 128, 180, "Arrow.png");
-		_ = new Image(512, 256, 128, 0, "Arrow.png");
-		_ = new Image(640, 256, 128, 270, "Arrow.png");
+		new Image(256, 256, 128, 90, "Arrow.png").SetColorTint(255, 0, 255);
+		new Image(384, 256, 128, 180, "Arrow.png").SetColorTint(0, 255, 255);
+		new Image(512, 256, 128, 0, "Arrow.png").SetColorTint(0, 255, 0);
+		new Image(640, 256, 128, 270, "Arrow.png").SetColorTint(255, 0, 0);
 
 		Start();
 
