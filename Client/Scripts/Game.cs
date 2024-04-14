@@ -1,4 +1,5 @@
 ﻿global using static SDL2.SDL;
+global using static SDL2.SDL_image;
 global using static SDL2.SDL_ttf;
 using System;
 using System.Collections.Generic;
@@ -33,6 +34,11 @@ public class Game
 		_ = new LabelField(128, 128, "Label Field 1");
 		_ = new LabelField(512, 128, "Label Field 2");
 
+		_ = new Image(256, 256, 128, 90, "Arrow.png");
+		_ = new Image(384, 256, 128, 180, "Arrow.png");
+		_ = new Image(512, 256, 128, 0, "Arrow.png");
+		_ = new Image(640, 256, 128, 270, "Arrow.png");
+
 		Start();
 
 		float b = 0;
@@ -61,6 +67,14 @@ public class Game
 	{
 		// Init sdl.
 		if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
+		{
+			Console.WriteLine(SDL_GetError());
+			return false;
+		}
+
+		// Init image rendering.
+		IMG_InitFlags img_initflags = IMG_InitFlags.IMG_INIT_PNG;
+		if (IMG_Init(img_initflags) != (int)img_initflags)
 		{
 			Console.WriteLine(SDL_GetError());
 			return false;
