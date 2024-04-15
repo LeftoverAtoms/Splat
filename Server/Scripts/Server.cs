@@ -39,8 +39,6 @@ public class Server
 	{
 		while (true)
 		{
-			Console.WriteLine("Tick");
-
 			RegisterNewClients();
 
 			await Task.Delay(1000);

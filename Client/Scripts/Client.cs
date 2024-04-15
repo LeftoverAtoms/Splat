@@ -18,6 +18,13 @@ public class Client : IClient
 		};
 	}
 
+	public void SetName(string name)
+	{
+		var data = Data;
+		data.Name = name;
+		Data = data;
+	}
+
 	public async void Connect(string ipString, ushort port)
 	{
 		var ip = IPAddress.Parse(ipString);
@@ -33,6 +40,7 @@ public class Client : IClient
 		catch (Exception ex)
 		{
 			Console.WriteLine(ex.Message);
+			Connect(ipString, port);
 		}
 	}
 
