@@ -1,8 +1,7 @@
+#include "Input.h"
 #include "Window.h"
 
 #include <SDL2/SDL.h>
-
-unsigned short keycodes[SDL_NUM_SCANCODES];
 
 int main(int argc, char* argv[])
 {
@@ -19,9 +18,9 @@ int main(int argc, char* argv[])
 			if (event.type == SDL_QUIT)
 				isRunning = false;
 			if (event.type == SDL_KEYDOWN)
-				keycodes[event.key.keysym.scancode] = 1;
+				Input::KeyCode[event.key.keysym.sym] = true;
 			if (event.type == SDL_KEYUP)
-				keycodes[event.key.keysym.scancode] = 0;
+				Input::KeyCode[event.key.keysym.sym] = false;
 		}
 	}
 

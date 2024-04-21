@@ -134,6 +134,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Input.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Window.cpp" />
   </ItemGroup>
@@ -142,6 +143,7 @@
     </CopyFileToFolders>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\Input.h" />
     <ClInclude Include="include\Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
