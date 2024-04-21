@@ -9,6 +9,9 @@ namespace Splat;
 
 public class Game
 {
+	const string TITLE = "Splat";
+	const string FONT = "Roboto-Regular.ttf";
+
 	public static List<Entity> Entities { get; } = new List<Entity>(10);
 
 	public static IntPtr Window { get; private set; }
@@ -20,42 +23,32 @@ public class Game
 
 	public static float DeltaTime { get; private set; }
 
-	public static Client? LocalClient;
+	public static Client? LocalClient { get; } = new Client();
 
 	static void Main()
 	{
-		// Initialize sdl.
-		if (!SetupSDL(title: "Splat", font: "Roboto-Regular"))
-			return;
+		bool succeeded = SetupSDL();
 
-		_ = new Label(128, 32, "Splat");
-
-		// Create textfields.
-		_ = new LabelField(128, 128, "Label Field 1");
-		_ = new LabelField(512, 128, "Label Field 2");
-
-		new Image(256, 256, 128, 90, "Arrow.png").SetColorTint(255, 0, 255);
-		new Image(384, 256, 128, 180, "Arrow.png").SetColorTint(0, 255, 255);
-		new Image(512, 256, 128, 0, "Arrow.png").SetColorTint(0, 255, 0);
-		new Image(640, 256, 128, 270, "Arrow.png").SetColorTint(255, 0, 0);
-
-		Start();
-
-		float b = 0;
-
-		// Execute gameloop.
-		while (running)
+		if (succeeded)
 		{
-			float a = SDL_GetTicks();
-			DeltaTime = a - b;
+			Start();
 
-			if (DeltaTime > 1000 / 60.0f)
+			float b = 0;
+
+			// Execute gameloop.
+			while (running)
 			{
-				b = a;
+				float a = SDL_GetTicks();
+				DeltaTime = a - b;
 
-				Input();
-				Update();
-				Render();
+				if (DeltaTime > 1000 / 60.0f)
+				{
+					b = a;
+
+					Input();
+					Update();
+					Render();
+				}
 			}
 		}
 
@@ -63,16 +56,16 @@ public class Game
 		Quit();
 	}
 
-	static bool SetupSDL(string title, string font)
+	static bool SetupSDL()
 	{
-		// Init sdl.
+		// Init SDL.
 		if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
 		{
 			Console.WriteLine(SDL_GetError());
 			return false;
 		}
 
-		// Init image rendering.
+		// Init SDL image.
 		IMG_InitFlags img_initflags = IMG_InitFlags.IMG_INIT_PNG;
 		if (IMG_Init(img_initflags) != (int)img_initflags)
 		{
@@ -80,7 +73,7 @@ public class Game
 			return false;
 		}
 
-		// Init font rendering.
+		// Init SDL TTF.
 		if (TTF_Init() != 0)
 		{
 			Console.WriteLine(SDL_GetError());
@@ -88,7 +81,7 @@ public class Game
 		}
 
 		// Create window.
-		Window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 720, SDL_WindowFlags.SDL_WINDOW_MAXIMIZED);
+		Window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 720, SDL_WindowFlags.SDL_WINDOW_MAXIMIZED);
 		if (Window == IntPtr.Zero)
 		{
 			Console.WriteLine(SDL_GetError());
@@ -104,7 +97,7 @@ public class Game
 		}
 
 		// Open font.
-		Font = TTF_OpenFont($"{font}.ttf", 24);
+		Font = TTF_OpenFont(FONT, 24);
 		if (Font == IntPtr.Zero)
 		{
 			Console.WriteLine(SDL_GetError());
@@ -117,8 +110,20 @@ public class Game
 
 	static void Start()
 	{
-		LocalClient = new Client(Environment.UserName);
-		LocalClient.Connect("127.0.0.1", 1234);
+		_ = new Label(128, 32, "Splat");
+
+		_ = new LabelField(128, 128, "Label Field 1");
+		_ = new LabelField(512, 128, "Label Field 2");
+
+		new Image(256, 256, 128, 90, "Arrow.png").SetColorTint(255, 0, 255);
+		new Image(384, 256, 128, 180, "Arrow.png").SetColorTint(0, 255, 255);
+		new Image(512, 256, 128, 0, "Arrow.png").SetColorTint(0, 255, 0);
+		new Image(640, 256, 128, 270, "Arrow.png").SetColorTint(255, 0, 0);
+
+		foreach (var entity in Entities)
+		{
+			entity.Start();
+		}
 	}
 
 	static void Input()
@@ -128,7 +133,7 @@ public class Game
 		// Handle all events within the queue before continuing.
 		while (SDL_PollEvent(out var evt) != 0)
 		{
-			Cursor.Selection?.OnEvent(evt);
+			Cursor.Selection?.Event(evt);
 
 			switch (evt.type)
 			{

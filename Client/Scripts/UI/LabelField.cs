@@ -11,7 +11,7 @@ public sealed class LabelField : Label
 		DrawBox(16);
 		DrawText();
 	}
-	public override void OnEvent(SDL_Event e)
+	public override void Event(SDL_Event e)
 	{
 		switch (e.type)
 		{

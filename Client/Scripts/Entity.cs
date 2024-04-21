@@ -20,7 +20,8 @@ public abstract class Entity
 		Transform.h = h;
 	}
 
+	public virtual void Start() { }
 	public virtual void Update() { }
 	public virtual void Render() { }
-	public virtual void OnEvent(SDL_Event e) { }
+	public virtual void Event(SDL_Event evt) { }
 }

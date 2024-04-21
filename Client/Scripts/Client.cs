@@ -1,26 +1,18 @@
 ﻿using System;
 using System.Net;
 using System.Net.Sockets;
-using System.Threading.Tasks;
 
 namespace Splat;
 
-public class Client : IClient
+public class Client : Entity, IClient
 {
 	public NetworkStream? Stream { get; private set; }
 	public ClientData Data { get; private set; }
 
-	public Client(string name)
-	{
-		Data = new ClientData()
-		{
-			Name = name
-		};
-	}
-
+	// TODO: This is excessive...
 	public void SetName(string name)
 	{
-		var data = Data;
+		ClientData data = Data;
 		data.Name = name;
 		Data = data;
 	}
@@ -30,30 +22,33 @@ public class Client : IClient
 		var ip = IPAddress.Parse(ipString);
 		var socket = new Socket(ip.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 
+		// Establish a connection to the server.
 		try
 		{
 			await socket.ConnectAsync(ip, port);
 			Stream = new NetworkStream(socket, true);
-
-			Update();
 		}
-		catch (Exception ex)
+		// Client has failed to connect!
+		catch (Exception error)
 		{
-			Console.WriteLine(ex.Message);
+			Console.WriteLine(error.Message);
+
+			// Retry connection.
 			Connect(ipString, port);
 		}
 	}
 
-	async void Update()
+	public override void Start()
 	{
-		while (true)
+		Connect("127.0.0.1", 1234);
+	}
+	public override void Update()
+	{
+		// Replicate to server.
+		if (Stream != null)
 		{
-			// Replicate to server.
 			byte[] bytes = Data.Serialize();
-			Stream?.Write(bytes, 0, bytes.Length);
-
-			// Tick rate.
-			await Task.Delay(1000);
+			Stream.Write(bytes, 0, bytes.Length);
 		}
 	}
 }
